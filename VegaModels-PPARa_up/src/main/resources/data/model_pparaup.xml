@@ -1,14 +1,14 @@
 <xml>
    
     <Version>
-        <Name>PXR up model test</Name>
-        <Key>PXRup</Key>
+        <Name>PPARa up model test</Name>
+        <Key>PPARa</Key>
         <Summary>Some random summary</Summary>
         <Version>1.0.0</Version>
     </Version>
     
     <Vega>
-        <TS>/data/ts_pparg_up.dat</TS>
+        <TS>/data/ts_ppara_up.dat</TS>
         <HasAlerts>False</HasAlerts>
         <Units>a-dimensional</Units>
         

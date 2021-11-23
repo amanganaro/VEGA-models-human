@@ -1,4 +1,5 @@
-package insilico.pparg_up.utils;
+package insilico.nrf2_up.utils;
+
 
 import insilico.core.descriptor.DescriptorBlock;
 import insilico.core.exception.GenericFailureException;
@@ -6,8 +7,7 @@ import insilico.core.exception.InitFailureException;
 import insilico.core.model.InsilicoModel;
 import insilico.core.model.InsilicoModelOutput;
 import insilico.core.molecule.conversion.SmilesMolecule;
-import insilico.pparg_up.descriptors.EmbeddedDescriptors;
-import insilico.pparg_up.ismPPARGup;
+import insilico.nrf2_up.descriptors.EmbeddedDescriptors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
@@ -19,12 +19,13 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Slf4j
 public class ModelsDeployment {
 
     public void PrintDescriptorBlock(InsilicoModel model, DescriptorBlock block){
         List<String> smilesList = new ArrayList<>();
-        URL url = (getClass().getResource("/data/SQfu.csv"));
+        URL url = (getClass().getResource("/data/dataset.csv"));
         StringBuilder stringBuilder = new StringBuilder("#" + "\t" + "Smiles (ionized)");
         String line;
         boolean printHeader = true;
@@ -59,7 +60,7 @@ public class ModelsDeployment {
     }
 
 
-    public ModelsDeployment PrintDescriptor(InsilicoModel model, String filename) throws FileNotFoundException {
+    public ModelsDeployment PrintDescriptor(InsilicoModel model, String filename) throws FileNotFoundException, MalformedURLException {
         List<String> smilesList = new ArrayList<>();
         URL url = (getClass().getResource("/data/dataset.csv"));
         StringBuilder stringBuilder = new StringBuilder("#" + "\t" + "Smiles (ionized)");
@@ -70,7 +71,7 @@ public class ModelsDeployment {
                 if(printHeader){
                     printHeader = false;
                     String[] lineArray = line.split("\t");
-                    for(int i = 15; i < lineArray.length; i++) {
+                    for(int i = 7; i <= 9; i++) {
                         stringBuilder.append("\t").append(lineArray[i]);
                     }
                 } else {
@@ -87,23 +88,19 @@ public class ModelsDeployment {
         printWriter.flush();
 
 
-        try {
-            int index = 1;
-            for(String smiles : smilesList) {
-                System.out.println("Calculating model descriptors for molecule #" + index + ": " + smiles);
+        int index = 1;
+        for(String smiles : smilesList) {
+            System.out.println("Calculating model descriptors for molecule #" + index + ": " + smiles);
 
 
-                stringBuilder = new StringBuilder(index + "\t" + smiles);
+            stringBuilder = new StringBuilder(index + "\t" + smiles);
 
-                EmbeddedDescriptors embeddedDescriptors = new EmbeddedDescriptors(SmilesMolecule.Convert(smiles), false);
-                for(double descriptor : embeddedDescriptors.getDescriptors())
-                    stringBuilder.append("\t").append(descriptor);
-                printWriter.println(stringBuilder);
-                printWriter.flush();
-                index++;
-            }
-        } catch (MalformedURLException ex){
-            log.warn(ex.getMessage());
+            EmbeddedDescriptors embeddedDescriptors = new EmbeddedDescriptors(SmilesMolecule.Convert(smiles), true);
+            for(double descriptor : embeddedDescriptors.getDescriptors())
+                stringBuilder.append("\t").append(descriptor);
+            printWriter.println(stringBuilder);
+            printWriter.flush();
+            index++;
         }
 
         printWriter.flush();
@@ -115,7 +112,7 @@ public class ModelsDeployment {
         return this;
     }
 
-    public ModelsDeployment PrintScaledDescriptor(String filename) throws FileNotFoundException, InitFailureException {
+    public ModelsDeployment PrintScaledDescriptor(String filename) throws FileNotFoundException, InitFailureException, MalformedURLException {
         double[] mean = {1.4840817942,0.8172471416,96.8266358839,58.059473175,8.1854881266,0.3790677221,0.9164467898,2.3069481091,8.1114599824,2.3518416887,1.1293474055,0.9481220057,1.122240985,0.8046789798,3.9665787159,99.8519718558,2.8144239226,7.0861917326,38.7186455585,1.2339489886,0.6077396658,18.0304582234};
         double[] stdDeviation = {0.1479268751,0.1830522696,49.7865056017,45.8133260898,6.0690865958,0.7677602622,1.4355467272,2.1316435317,8.4602293961,1.6070677845,0.0175159328,0.9605777424,0.2845494833,0.2010461281,5.8068022574,120.9305976135,3.951493238,8.1418732278,7.0433319726,1.4357635161,0.488469054,24.6975804467};
 
@@ -148,24 +145,20 @@ public class ModelsDeployment {
         printWriter.flush();
 
 
-        try {
-            int index = 1;
-            for(String smiles : smilesList) {
-                System.out.println("Calculating model scaled descriptors for molecule #" + index + ": " + smiles);
+        int index = 1;
+        for(String smiles : smilesList) {
+            System.out.println("Calculating model scaled descriptors for molecule #" + index + ": " + smiles);
 
 
-                stringBuilder = new StringBuilder(index + "\t" + smiles);
-                EmbeddedDescriptors embeddedDescriptors = new EmbeddedDescriptors(SmilesMolecule.Convert(smiles), false);
-                for(int i = 0; i < embeddedDescriptors.getDescriptors().length; i++) {
-                    double scaledDescriptor = (embeddedDescriptors.getDescriptors()[i] - mean[i])/stdDeviation[i];
-                    stringBuilder.append("\t").append(scaledDescriptor);
-                }
-                printWriter.println(stringBuilder);
-                printWriter.flush();
-                index++;
+            stringBuilder = new StringBuilder(index + "\t" + smiles);
+            EmbeddedDescriptors embeddedDescriptors = new EmbeddedDescriptors(SmilesMolecule.Convert(smiles), false);
+            for(int i = 0; i < embeddedDescriptors.getDescriptors().length; i++) {
+                double scaledDescriptor = (embeddedDescriptors.getDescriptors()[i] - mean[i])/stdDeviation[i];
+                stringBuilder.append("\t").append(scaledDescriptor);
             }
-        } catch (MalformedURLException ex){
-            log.warn(ex.getMessage());
+            printWriter.println(stringBuilder);
+            printWriter.flush();
+            index++;
         }
 
         printWriter.flush();
@@ -180,9 +173,9 @@ public class ModelsDeployment {
 
     public ModelsDeployment TestModelWithTrainingSet(InsilicoModel model, String filename) throws MalformedURLException, FileNotFoundException, GenericFailureException {
         List<String> smilesList = new ArrayList<>();
-        List<String> knimePrediction = new ArrayList<>();
-        List<String> knimePrediction_0 = new ArrayList<>();
-        List<String> knimePrediction_1 = new ArrayList<>();
+//        List<String> knimePrediction = new ArrayList<>();
+//        List<String> knimePrediction_0 = new ArrayList<>();
+//        List<String> knimePrediction_1 = new ArrayList<>();
         List<String> setType = new ArrayList<>();
         List<String> experimentalValues = new ArrayList<>();
         URL url = (getClass().getResource("/data/dataset.csv"));
@@ -190,23 +183,24 @@ public class ModelsDeployment {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(new DataInputStream(url.openStream())))){
             br.readLine();
             while ((line = br.readLine()) != null){
-                smilesList.add(line.split("\t")[2]);
-                setType.add(line.split("\t")[13]);
-                experimentalValues.add(line.split("\t")[14]);
-                if(line.split("\t")[13].equals("training")){
-                    knimePrediction_0.add(line.split("\t")[7]);
-                    knimePrediction_1.add(line.split("\t")[8]);
-                    if((Double.parseDouble((line.split("\t")[7]))) > (Double.parseDouble((line.split("\t")[8]))))
-                        knimePrediction.add("0");
-                    else knimePrediction.add("1");
+                smilesList.add(line.split("\t")[1]);
+                setType.add(line.split("\t")[15]);
+                experimentalValues.add(line.split("\t")[16]);
+//                knimePrediction.add(line.split("\t")[10]);
+//                if(line.split("\t")[13].equals("Training")){
+//                    knimePrediction_0.add(line.split("\t")[7]);
+//                    knimePrediction_1.add(line.split("\t")[8]);
+//                    if((Double.parseDouble((line.split("\t")[7]))) > (Double.parseDouble((line.split("\t")[8]))))
+//                        knimePrediction.add("0");
+//                    else knimePrediction.add("1");
 
-                } else {
-                    knimePrediction_0.add(line.split("\t")[11]);
-                    knimePrediction_1.add(line.split("\t")[12]);
-                    if((Double.parseDouble((line.split("\t")[11]))) > (Double.parseDouble((line.split("\t")[12]))))
-                        knimePrediction.add("0");
-                    else knimePrediction.add("1");
-                }
+//                } else {
+//                    knimePrediction_0.add(line.split("\t")[11]);
+//                    knimePrediction_1.add(line.split("\t")[12]);
+//                    if((Double.parseDouble((line.split("\t")[11]))) > (Double.parseDouble((line.split("\t")[12]))))
+//                        knimePrediction.add("0");
+//                    else knimePrediction.add("1");
+//                }
             }
 
         } catch (Exception ex){
@@ -214,20 +208,18 @@ public class ModelsDeployment {
         }
 
         PrintWriter printWriter = new PrintWriter(filename + ".csv");
-        StringBuilder stringBuilder = new StringBuilder("Id\t" + "Smiles\t" + "Experimental Values\t" + "Knime Prediction\t" + "Knime Prediction_0\t" + "Knime Prediction_1\t" + "Vega Prediction\t" + "Vega Prediction_0\t" + "Vega Prediction_1\t" + "Set\n");
+        StringBuilder stringBuilder = new StringBuilder("Id\t" + "Smiles\t" + "Experimental Values\t" + "Vega Prediction\t" + "Vega_Prediction_0\t" + "Vega_Prediction_1\t" + "Set\n");
 //        printWriter.println(stringBuilder);
         int index = 0;
         for(String smiles: smilesList){
-            log.info("Calculating PPARg_up for molecule #" + (index+1) + ": " + smiles + " ...");
+            log.info("Calculating AhR_up for molecule #" + (index+1) + ": " + smiles + " ...");
             InsilicoModelOutput out = model.Execute(SmilesMolecule.Convert(smiles));
-            if(out.getStatus() < 1)
-                System.out.println();
             stringBuilder.append(index+1).append("\t")
                     .append(smiles).append("\t")
                     .append(experimentalValues.get(index)).append("\t")
-                    .append(knimePrediction.get(index)).append("\t")
-                    .append(knimePrediction_0.get(index)).append("\t")
-                    .append(knimePrediction_1.get(index)).append("\t")
+//                    .append(knimePrediction.get(index)).append("\t")
+//                    .append(knimePrediction_0.get(index)).append("\t")
+//                    .append(knimePrediction_1.get(index)).append("\t")
                     .append(out.getResults()[0]).append("\t")
                     .append(out.getResults()[1]).append("\t")
                     .append(out.getResults()[2]).append("\t")

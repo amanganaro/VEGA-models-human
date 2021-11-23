@@ -1,4 +1,4 @@
-package insilico.pparg_up.utils;
+package insilico.ppara_up.utils;
 
 import insilico.core.descriptor.DescriptorBlock;
 import insilico.core.exception.GenericFailureException;
@@ -6,8 +6,7 @@ import insilico.core.exception.InitFailureException;
 import insilico.core.model.InsilicoModel;
 import insilico.core.model.InsilicoModelOutput;
 import insilico.core.molecule.conversion.SmilesMolecule;
-import insilico.pparg_up.descriptors.EmbeddedDescriptors;
-import insilico.pparg_up.ismPPARGup;
+import insilico.ppara_up.descriptors.EmbeddedDescriptors;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.*;
@@ -24,7 +23,7 @@ public class ModelsDeployment {
 
     public void PrintDescriptorBlock(InsilicoModel model, DescriptorBlock block){
         List<String> smilesList = new ArrayList<>();
-        URL url = (getClass().getResource("/data/SQfu.csv"));
+        URL url = (getClass().getResource("/data/dataset.csv"));
         StringBuilder stringBuilder = new StringBuilder("#" + "\t" + "Smiles (ionized)");
         String line;
         boolean printHeader = true;
@@ -70,7 +69,7 @@ public class ModelsDeployment {
                 if(printHeader){
                     printHeader = false;
                     String[] lineArray = line.split("\t");
-                    for(int i = 15; i < lineArray.length; i++) {
+                    for(int i = 7; i <= 9; i++) {
                         stringBuilder.append("\t").append(lineArray[i]);
                     }
                 } else {
@@ -95,7 +94,7 @@ public class ModelsDeployment {
 
                 stringBuilder = new StringBuilder(index + "\t" + smiles);
 
-                EmbeddedDescriptors embeddedDescriptors = new EmbeddedDescriptors(SmilesMolecule.Convert(smiles), false);
+                EmbeddedDescriptors embeddedDescriptors = new EmbeddedDescriptors(SmilesMolecule.Convert(smiles), true);
                 for(double descriptor : embeddedDescriptors.getDescriptors())
                     stringBuilder.append("\t").append(descriptor);
                 printWriter.println(stringBuilder);
@@ -181,8 +180,8 @@ public class ModelsDeployment {
     public ModelsDeployment TestModelWithTrainingSet(InsilicoModel model, String filename) throws MalformedURLException, FileNotFoundException, GenericFailureException {
         List<String> smilesList = new ArrayList<>();
         List<String> knimePrediction = new ArrayList<>();
-        List<String> knimePrediction_0 = new ArrayList<>();
-        List<String> knimePrediction_1 = new ArrayList<>();
+//        List<String> knimePrediction_0 = new ArrayList<>();
+//        List<String> knimePrediction_1 = new ArrayList<>();
         List<String> setType = new ArrayList<>();
         List<String> experimentalValues = new ArrayList<>();
         URL url = (getClass().getResource("/data/dataset.csv"));
@@ -191,22 +190,23 @@ public class ModelsDeployment {
             br.readLine();
             while ((line = br.readLine()) != null){
                 smilesList.add(line.split("\t")[2]);
-                setType.add(line.split("\t")[13]);
-                experimentalValues.add(line.split("\t")[14]);
-                if(line.split("\t")[13].equals("training")){
-                    knimePrediction_0.add(line.split("\t")[7]);
-                    knimePrediction_1.add(line.split("\t")[8]);
-                    if((Double.parseDouble((line.split("\t")[7]))) > (Double.parseDouble((line.split("\t")[8]))))
-                        knimePrediction.add("0");
-                    else knimePrediction.add("1");
+                setType.add(line.split("\t")[6]);
+                experimentalValues.add(line.split("\t")[5]);
+                knimePrediction.add(line.split("\t")[10]);
+//                if(line.split("\t")[13].equals("Training")){
+//                    knimePrediction_0.add(line.split("\t")[7]);
+//                    knimePrediction_1.add(line.split("\t")[8]);
+//                    if((Double.parseDouble((line.split("\t")[7]))) > (Double.parseDouble((line.split("\t")[8]))))
+//                        knimePrediction.add("0");
+//                    else knimePrediction.add("1");
 
-                } else {
-                    knimePrediction_0.add(line.split("\t")[11]);
-                    knimePrediction_1.add(line.split("\t")[12]);
-                    if((Double.parseDouble((line.split("\t")[11]))) > (Double.parseDouble((line.split("\t")[12]))))
-                        knimePrediction.add("0");
-                    else knimePrediction.add("1");
-                }
+//                } else {
+//                    knimePrediction_0.add(line.split("\t")[11]);
+//                    knimePrediction_1.add(line.split("\t")[12]);
+//                    if((Double.parseDouble((line.split("\t")[11]))) > (Double.parseDouble((line.split("\t")[12]))))
+//                        knimePrediction.add("0");
+//                    else knimePrediction.add("1");
+//                }
             }
 
         } catch (Exception ex){
@@ -214,11 +214,11 @@ public class ModelsDeployment {
         }
 
         PrintWriter printWriter = new PrintWriter(filename + ".csv");
-        StringBuilder stringBuilder = new StringBuilder("Id\t" + "Smiles\t" + "Experimental Values\t" + "Knime Prediction\t" + "Knime Prediction_0\t" + "Knime Prediction_1\t" + "Vega Prediction\t" + "Vega Prediction_0\t" + "Vega Prediction_1\t" + "Set\n");
+        StringBuilder stringBuilder = new StringBuilder("Id\t" + "Smiles\t" + "Experimental Values\t" + "Knime Prediction\t" + "Vega Prediction\t" + "Vega_Prediction_0\t" + "Vega_Prediction_1\t" + "Set\n");
 //        printWriter.println(stringBuilder);
         int index = 0;
         for(String smiles: smilesList){
-            log.info("Calculating PPARg_up for molecule #" + (index+1) + ": " + smiles + " ...");
+            log.info("Calculating PPARa_up for molecule #" + (index+1) + ": " + smiles + " ...");
             InsilicoModelOutput out = model.Execute(SmilesMolecule.Convert(smiles));
             if(out.getStatus() < 1)
                 System.out.println();
@@ -226,8 +226,8 @@ public class ModelsDeployment {
                     .append(smiles).append("\t")
                     .append(experimentalValues.get(index)).append("\t")
                     .append(knimePrediction.get(index)).append("\t")
-                    .append(knimePrediction_0.get(index)).append("\t")
-                    .append(knimePrediction_1.get(index)).append("\t")
+//                    .append(knimePrediction_0.get(index)).append("\t")
+//                    .append(knimePrediction_1.get(index)).append("\t")
                     .append(out.getResults()[0]).append("\t")
                     .append(out.getResults()[1]).append("\t")
                     .append(out.getResults()[2]).append("\t")

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>VegaModels-PPARg_up</artifactId>
+    <artifactId>VegaModels-PPARa_up</artifactId>
     <version>0.2.1</version>
 
     <properties>
@@ -17,10 +17,9 @@
         <maven.compiler.target>15</maven.compiler.target>
     </properties>
 
-
-    <name>PPArg_up - 1.0.0</name>
+    <name>PPAra_up - 1.0.0</name>
     <description>
-        PPArg_up model
+        PPAra_up model
     </description>
 
     <dependencies>
@@ -52,6 +51,5 @@
             </plugin>
         </plugins>
     </build>
-
 
 </project>
