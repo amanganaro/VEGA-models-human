@@ -1,4 +1,4 @@
-package insilico.fish_lc50.descriptors.weights;
+package insilico.logk.descriptors.weights;
 
 import insilico.core.exception.GenericFailureException;
 import insilico.core.exception.InvalidMoleculeException;
@@ -20,18 +20,20 @@ import java.util.List;
 public class DescriptorMLogP {
 
     private double MISSING_VALUE = -999;
-    public double MLogP = MISSING_VALUE;
+    public double MLogP;
     private int nAtoms;
     private double[][] ConnMatrix;
     private int[][] TopoMatrix;
     private RingSet MolRings;
 
-    public DescriptorMLogP(InsilicoMolecule Mol){
-        CalculateAllDescriptors(Mol);
+    public DescriptorMLogP(){
+        MLogP = MISSING_VALUE;
     }
 
     public void CalculateAllDescriptors(InsilicoMolecule Mol){
+
         CalculateMLogP(Mol);
+
     }
 
     private void CalculateMLogP(InsilicoMolecule Mol){
@@ -246,7 +248,31 @@ public class DescriptorMLogP {
             if ((TopoMatrix[i][atom]==1) && ((ConnMatrix[i][i]==8)||(ConnMatrix[i][i]==7))) {
                 count+=2;
 
-
+                // check for correction
+//                if ((AreEqual(GetName(mol,i),"O"))&&(AreEqual(GetName(mol,atom),"N"))&&
+//                    (ConnMatrix[atom][i]==1)) {
+//                    // O-N
+//                    for (int z=0; z<nAtoms; z++) {
+//                        if ((z==atom)||(z==i)) continue;
+//                        if (ConnMatrix[z][i]==1) {
+//                            // C-O-N
+//                            count--;
+//                            break;
+//                        }
+//                    }
+//                }
+//                if ((AreEqual(GetName(mol,i),"N"))&&(AreEqual(GetName(mol,atom),"O"))&&
+//                    (ConnMatrix[atom][i]==1)) {
+//                    // N-O
+//                    for (int z=0; z<nAtoms; z++) {
+//                        if ((z==atom)||(z==i)) continue;
+//                        if (ConnMatrix[z][atom]==1) {
+//                            // N-O-C
+//                            count--;
+//                            break;
+//                        }
+//                    }
+//                }
 
             }
 
@@ -263,6 +289,21 @@ public class DescriptorMLogP {
                 if ((AreEqual(A_Atom,"C"))||(AreEqual(A_Atom,"S"))||(AreEqual(A_Atom,"P"))) {
                     count+=1;
 
+                    // adjust to be consistent with Dragon MLogP
+                    // if at least one bond is double, count is increased again
+                    // except in case of O=X-N
+//                    int MidAtom = mol.getAtomNumber(Path.get(1));
+//                    if ( (ConnMatrix[MidAtom][atom]>1)||(ConnMatrix[MidAtom][i]>=2) ) {
+//                        boolean skip = false;
+//                        if ((AreEqual(GetName(mol,i),"O"))&&((ConnMatrix[MidAtom][i]>=2))&&
+//                            (AreEqual(GetName(mol,atom),"N"))&&((ConnMatrix[MidAtom][atom]==1)))
+//                              skip = true;
+//                        if ((AreEqual(GetName(mol,atom),"O"))&&((ConnMatrix[MidAtom][atom]>=2))&&
+//                            (AreEqual(GetName(mol,i),"N"))&&((ConnMatrix[MidAtom][i]==1)))
+//                              skip = true;
+//                        if (!(skip))
+//                            count++;
+//                    }
 
                     int MidAtom = mol.indexOf(Path.get(1));
                     int midVD = 0;
