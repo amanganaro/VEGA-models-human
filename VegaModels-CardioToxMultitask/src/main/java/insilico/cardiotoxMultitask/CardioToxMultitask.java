@@ -1,4 +1,4 @@
-package insilico.mitochondrial_dysfunction;
+package insilico.cardiotoxMultitask;
 
 import insilico.core.ad.ADCheckACF;
 import insilico.core.ad.ADCheckIndicesQualitative;
@@ -11,49 +11,60 @@ import insilico.core.model.InsilicoModelOutput;
 import insilico.core.model.InsilicoModelPython;
 import insilico.core.model.runner.iInsilicoModelRunnerMessenger;
 import insilico.core.python.CdddDescriptors;
-import insilico.core.python.Communication;
-import insilico.core.tools.utils.FileUtilities;
 import insilico.core.tools.utils.ModelUtilities;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.net.JarURLConnection;
+import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Enumeration;
 import java.util.Map;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
 
-public class MitochondrialDysfunction extends InsilicoModelPython {
+public class CardioToxMultitask extends InsilicoModelPython {
 
-    private static final Logger log = LoggerFactory.getLogger(MitochondrialDysfunction.class);
+    private static final Logger log = LoggerFactory.getLogger(CardioToxMultitask.class);
 
     private static final long serialVersionUID = 1L;
 
-    private static final String ModelData = "/data/model_mitochondrial_dysfunction.xml";
+    private static final String ModelData = "/data/model_cardio_tox_multitask.xml";
 
     private CdddDescriptors cdddDescriptors;
     private final String[] PythonResultsName;
 
-    public MitochondrialDysfunction(boolean bypassCheckCondaEnv, iInsilicoModelRunnerMessenger messenger) throws InitFailureException, GenericFailureException{
+    public CardioToxMultitask(boolean bypassCheckCondaEnv, iInsilicoModelRunnerMessenger messenger) throws InitFailureException, GenericFailureException{
         super(ModelData, messenger);
         isUsingCdddDescriptor=true;
 
-        this.ResultsSize = 2;
+        this.ResultsSize = 12;
         this.ResultsName = new String[ResultsSize];
-        this.ResultsName[0] = "KE2 prediction";
-        this.ResultsName[1] = "Python model AD assessment";
+        this.ResultsName[0] = "Apical cardiotoxicity";
+        this.ResultsName[1] = "Aryl hydrocarbon receptor";
+        this.ResultsName[2] = "Cardiomyocyte Myocardial Injury";
+        this.ResultsName[3] = "Change Action Potential";
+        this.ResultsName[4] = "Change in Inotropy";
+        this.ResultsName[5] = "Change In Vasoactivity";
+        this.ResultsName[6] = "Endothelial injury coagulation";
+        this.ResultsName[7] = "hERG channels inhibitors";
+        this.ResultsName[8] = "Increase mitochondrial dysfunction";
+        this.ResultsName[9] = "OxidativeStress";
+        this.ResultsName[10] = "Valvular Injury Proliferation";
+        this.ResultsName[11] = "ApplicabilityDomain";
 
-        PythonResultsName = new String[this.ResultsSize];
-        PythonResultsName[0] = "KE2";
-        PythonResultsName[1] = "AD_KE2";
+        PythonResultsName = new String[ResultsSize];
+        this.PythonResultsName[0] = "Apical cardiotoxicity";
+        this.PythonResultsName[1] = "Aryl hydrocarbon receptor";
+        this.PythonResultsName[2] = "Cardiomyocyte Myocardial Injury";
+        this.PythonResultsName[3] = "Change Action Potential";
+        this.PythonResultsName[4] = "Change in Inotropy";
+        this.PythonResultsName[5] = "Change In Vasoactivity";
+        this.PythonResultsName[6] = "Endothelial injury coagulation";
+        this.PythonResultsName[7] = "hERG channels inhibitors";
+        this.PythonResultsName[8] = "Increase mitochondrial dysfunction";
+        this.PythonResultsName[9] = "OxidativeStress";
+        this.PythonResultsName[10] = "Valvular Injury Proliferation";
+        this.PythonResultsName[11] = "ApplicabilityDomain";
 
         this.DescriptorsSize = 0;
         this.DescriptorsNames = new String[DescriptorsSize];
@@ -66,14 +77,14 @@ public class MitochondrialDysfunction extends InsilicoModelPython {
         this.ADItemsName[3] = new ADIndexACF().GetIndexName();
 
         if (System.getProperty("os.name").startsWith("Windows")) {
-            pathToExternalFolder = Paths.get(System.getProperty("user.home"),"\\AppData\\Local\\vega-models\\mitochondrial-dysfunction").resolve("");
+            pathToExternalFolder = Paths.get(System.getProperty("user.home"),"\\AppData\\Local\\vega-models\\cardio-tox-multitask").resolve("");
         }
         else {
-            pathToExternalFolder = Paths.get(System.getProperty("user.home") ,"/.local/share/vega-models/mitochondrial-dysfunction").resolve("");
+            pathToExternalFolder = Paths.get(System.getProperty("user.home") ,"/.local/share/vega-models/cardio-tox-multitask").resolve("");
         }
 
         if(!bypassCheckCondaEnv) {
-            boolean isEnvSet = configureCondaEnv("https://amcc.it/vega/mitochondrial-dysfunction.zip");
+            boolean isEnvSet = configureCondaEnv("https://amcc.it/vega/cardio-tox-multitask.zip");
             if(!isEnvSet) {
                 throw new InitFailureException("Conda environment "+getCondaEnv()+" not set");
             }
@@ -102,29 +113,30 @@ public class MitochondrialDysfunction extends InsilicoModelPython {
     protected short CalculateModel() {
         Map<String, String> Prediction = null;
         try {
+
             log.info("Start to execute the model");
             Path pathToScriptFile = Paths.get(pathToExternalFolder.toString(), getScriptName());
-            File f=File.createTempFile("output-mitochondrial-dysfunction", ".csv");
+            File f = File.createTempFile("output-cardio-tox-multitask", ".csv");
             outputTempFile = f.getAbsolutePath();
             //take the correspondent file from descriptors directory
             String descriptorFile = cdddDescriptors.getFilePathOf(CurMolecule.getInputSMILES());
             Prediction=super.calculatePythonModel(pathToScriptFile, "--input "+descriptorFile,
-                    " --output "+outputTempFile);
+                    "--output " + outputTempFile);
             log.info("Finish to execute the model");
 
             if(Prediction != null) {
                 log.info("Prediction calculated");
 
                 CurOutput.setMainResultValue(Double.parseDouble(Prediction.get(PythonResultsName[0])));
+
                 String[] Res = new String[ResultsSize];
-                try {
-                    Res[0] = this.GetTrainingSet().getClassLabel(Double.parseDouble(Prediction.get(PythonResultsName[0])));
-                } catch (Throwable ex) {
-                    log.warn("Unable to find label for mitochondrial dysfunction value " + Prediction.get(PythonResultsName[0]));
-                    Res[0] = Prediction.get(PythonResultsName[0]);
-                }
-                for(int i=1; i<ResultsSize; i++){
-                    Res[i] = Prediction.get(PythonResultsName[i]);
+                for(int i=0; i<ResultsSize; i++){
+                    try {
+                        Res[i] = this.GetTrainingSet().getClassLabel(Double.parseDouble(Prediction.get(PythonResultsName[i])));
+                    } catch (Throwable ex) {
+                        log.warn("Unable to find label for cardio tox multitask value " + Prediction.get(PythonResultsName[i]));
+                        Res[i] = Prediction.get(PythonResultsName[i]);
+                    };
                 }
 
                 CurOutput.setResults(Res);
@@ -199,7 +211,7 @@ public class MitochondrialDysfunction extends InsilicoModelPython {
 
     @Override
     public String getScriptName() {
-        return "app-mitochondrial-dysfunction.py";
+        return "app-cardio-tox-multitask.py";
     }
 
     public String getInputTempFile() {
@@ -210,4 +222,5 @@ public class MitochondrialDysfunction extends InsilicoModelPython {
     public boolean isUsingCdddDescriptor(){
         return true;
     }
+
 }

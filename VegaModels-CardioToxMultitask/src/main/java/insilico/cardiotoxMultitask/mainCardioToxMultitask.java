@@ -1,4 +1,4 @@
-package insilico.mitochondrial_dysfunction;
+package insilico.cardiotoxMultitask;
 
 import insilico.core.exception.GenericFailureException;
 import insilico.core.exception.InitFailureException;
@@ -8,39 +8,37 @@ import insilico.core.model.InsilicoModelPython;
 import insilico.core.model.trainingset.iTrainingSet;
 import insilico.core.molecule.conversion.SmilesMolecule;
 import insilico.core.python.CdddDescriptors;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import utils.ModelsDeployment;
 
-import java.io.*;
-import java.net.*;
-import java.nio.file.*;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.*;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 
-public class mainScriptMitochondrialDysfunction {
+public class mainCardioToxMultitask {
 
-    private static final Logger log = LogManager.getLogger(mainScriptMitochondrialDysfunction.class);
+    private static final Logger log = LogManager.getLogger(mainCardioToxMultitask.class);
 
 
     public static void main(String[] args) throws GenericFailureException, InitFailureException, IOException, URISyntaxException, InterruptedException {
-        InsilicoModel model = new MitochondrialDysfunction(true, null);
+        InsilicoModel model = new CardioToxMultitask(false, null);
 
-        iTrainingSet ist = model.GetTrainingSet();
-        for(int i=0; i < ist.getMoleculesSize(); i++){
-            System.out.println(ist.getSMILES(i)+" "+ist.getPredictedValueFormatted(i));
-        }
-
-        if(1==1)
-            return;
+//        iTrainingSet ist = model.GetTrainingSet();
+//        for(int i=0; i < ist.getMoleculesSize(); i++){
+//            System.out.println(ist.getSMILES(i)+" "+ist.getPredictedValueFormatted(i));
+//        }
+//
+//        if(1==1)
+//            return;
 
 //        ModelsDeployment.BuildDataset(model, "out_ts");
 //        File sourceFile = new File("out_ts/" + model.getInfo().getTrainingSetURL() + "/" + model.getInfo().getTrainingSetURL().split("/data/")[1]);
-//        File destinationFile = new File("VegaModels-MitochondrialDysfunction\\src\\main\\resources\\data\\ts_mitochondrial_dysfunction.dat");
+//        File destinationFile = new File("VegaModels-MitochondrialDysfunction\\src\\main\\resources\\data\\ts_cardio_tox_multitask.dat");
 //        try {
 //            Files.move(sourceFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 //        } catch (Exception ex) {
@@ -49,7 +47,7 @@ public class mainScriptMitochondrialDysfunction {
 //        if(1==1){
 //            return;
 //        }
-//        model.setSkipADandTSLoading(true);
+        //model.setSkipADandTSLoading(true);
 
         List<String> smilesList = new ArrayList<>();
         smilesList.add("O=[N+]([O-])c1cc(cc(c1N(CCC)CCC)[N+](=O)[O-])S(=O)(=O)C");
@@ -59,8 +57,8 @@ public class mainScriptMitochondrialDysfunction {
         CdddDescriptors cdddDescriptors = null;
 
         if(InsilicoModelPython.class.isAssignableFrom(model.getClass())){
-             cdddDescriptors = new CdddDescriptors(smilesList, false, null);
-            ((MitochondrialDysfunction) model).setDescriptorGenerator(cdddDescriptors);
+            cdddDescriptors = new CdddDescriptors(smilesList, false, null);
+            ((CardioToxMultitask) model).setDescriptorGenerator(cdddDescriptors);
             boolean descriptorOK = cdddDescriptors.calculateDescriptors();
 
         }
@@ -74,5 +72,4 @@ public class mainScriptMitochondrialDysfunction {
 
         cdddDescriptors.dispose();
     }
-
 }
