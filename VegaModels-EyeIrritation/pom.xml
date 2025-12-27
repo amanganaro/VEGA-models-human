@@ -3,9 +3,9 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>VegaModels</artifactId>
         <groupId>InSilico</groupId>
-        <version>0.1</version>
+        <artifactId>VegaModels-Human</artifactId>
+        <version>1.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

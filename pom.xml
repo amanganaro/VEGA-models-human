@@ -5,9 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>InSilico</groupId>
-    <artifactId>VegaModels</artifactId>
+    <artifactId>VegaModels-Human</artifactId>
     <packaging>pom</packaging>
-    <version>0.1</version>
+    <version>1.0</version>
+
     <modules>
 
         <!-- HUMAN        -->
@@ -24,7 +25,8 @@
         <module>VegaModels-CarcinogenicitySFORegression</module>
         <module>VegaModels-CardioToxMultitask</module>
         <module>VegaModels-CoralChromosomal</module>
-        <module>VegaModels-CramerToxTree</module>
+<!-- TODO: Cramer disabled, should check how to deal with dependencies        -->
+<!--        <module>VegaModels-CramerToxTree</module>-->
         <module>VegaModels-DevtoxCaesar</module>
         <module>VegaModels-DevtoxPG</module>
         <module>VegaModels-DiliBayer</module>
@@ -63,99 +65,99 @@
 
 
         <!-- ECOTOX        -->
-        <module>VegaModels-AlgaeCombaseClass</module>
-        <module>VegaModels-AlgaeCombaseEC50</module>
-        <module>VegaModels-AlgaeEC50</module>
-        <module>VegaModels-AlgaeNoec</module>
-        <module>VegaModels-BCFArnotGobas</module>
-        <module>VegaModels-BCFCaesar</module>
-        <module>VegaModels-BCFKNN</module>
-        <module>VegaModels-BCFMeylan</module>
-        <module>VegaModels-BeeKNN</module>
-        <module>VegaModels-DaphniaCombase</module>
-        <module>VegaModels-DaphniaDemetra</module>
-        <module>VegaModels-DaphniaEC50</module>
-        <module>VegaModels-DaphniaEPA</module>
-        <module>VegaModels-DaphniaNOEC</module>
-        <module>VegaModels-EarthwormToxicity</module>
-        <module>VegaModels-FatheadEPA</module>
-        <module>VegaModels-FatHeadKNN</module>
-        <module>VegaModels-FishCombase</module>
-        <module>VegaModels-FishIRFMN</module>
-        <module>VegaModels-FishKNN</module>
-        <module>VegaModels-FishLC50</module>
-        <module>VegaModels-FishNIC</module>
-        <module>VegaModels-FishNOEC</module>
-        <module>VegaModels-GuppyKnn</module>
-        <module>VegaModels-KmArnot</module>
-        <module>VegaModels-MoaEpa</module>
-        <module>VegaModels-MoaIRFMN</module>
-        <module>VegaModels-SludgeCombaseClass</module>
-        <module>VegaModels-SludgeCombaseEC50</module>
-        <module>VegaModels-VerhaarToxtree</module>
-        <module>VegaModels-ZebrafishCoral</module>
+<!--        <module>VegaModels-AlgaeCombaseClass</module>-->
+<!--        <module>VegaModels-AlgaeCombaseEC50</module>-->
+<!--        <module>VegaModels-AlgaeEC50</module>-->
+<!--        <module>VegaModels-AlgaeNoec</module>-->
+<!--        <module>VegaModels-BCFArnotGobas</module>-->
+<!--        <module>VegaModels-BCFCaesar</module>-->
+<!--        <module>VegaModels-BCFKNN</module>-->
+<!--        <module>VegaModels-BCFMeylan</module>-->
+<!--        <module>VegaModels-BeeKNN</module>-->
+<!--        <module>VegaModels-DaphniaCombase</module>-->
+<!--        <module>VegaModels-DaphniaDemetra</module>-->
+<!--        <module>VegaModels-DaphniaEC50</module>-->
+<!--        <module>VegaModels-DaphniaEPA</module>-->
+<!--        <module>VegaModels-DaphniaNOEC</module>-->
+<!--        <module>VegaModels-EarthwormToxicity</module>-->
+<!--        <module>VegaModels-FatheadEPA</module>-->
+<!--        <module>VegaModels-FatHeadKNN</module>-->
+<!--        <module>VegaModels-FishCombase</module>-->
+<!--        <module>VegaModels-FishIRFMN</module>-->
+<!--        <module>VegaModels-FishKNN</module>-->
+<!--        <module>VegaModels-FishLC50</module>-->
+<!--        <module>VegaModels-FishNIC</module>-->
+<!--        <module>VegaModels-FishNOEC</module>-->
+<!--        <module>VegaModels-GuppyKnn</module>-->
+<!--        <module>VegaModels-KmArnot</module>-->
+<!--        <module>VegaModels-MoaEpa</module>-->
+<!--        <module>VegaModels-MoaIRFMN</module>-->
+<!--        <module>VegaModels-SludgeCombaseClass</module>-->
+<!--        <module>VegaModels-SludgeCombaseEC50</module>-->
+<!--        <module>VegaModels-VerhaarToxtree</module>-->
+<!--        <module>VegaModels-ZebrafishCoral</module>-->
 
 
         <!-- FATE        -->
-        <module>VegaModels-HydrolysisCoral</module>
-        <module>VegaModels-PersistenceAirCoral</module>
-        <module>VegaModels-PersistenceSedimentIRFMN</module>
-        <module>VegaModels-PersistenceSedimentQuantitativeIRFMN</module>
-        <module>VegaModels-PersistenceSoilIRFMN</module>
-        <module>VegaModels-PersistenceSoilQuantitativeIRFMN</module>
-        <module>VegaModels-PersistenceWaterIRFMN</module>
-        <module>VegaModels-PersistenceWaterQuantatitativeIRFMN</module>
-        <module>VegaModels-ReadyBioIRFMN</module>
+<!--        <module>VegaModels-HydrolysisCoral</module>-->
+<!--        <module>VegaModels-PersistenceAirCoral</module>-->
+<!--        <module>VegaModels-PersistenceSedimentIRFMN</module>-->
+<!--        <module>VegaModels-PersistenceSedimentQuantitativeIRFMN</module>-->
+<!--        <module>VegaModels-PersistenceSoilIRFMN</module>-->
+<!--        <module>VegaModels-PersistenceSoilQuantitativeIRFMN</module>-->
+<!--        <module>VegaModels-PersistenceWaterIRFMN</module>-->
+<!--        <module>VegaModels-PersistenceWaterQuantatitativeIRFMN</module>-->
+<!--        <module>VegaModels-ReadyBioIRFMN</module>-->
 
 
         <!-- PROPERTIES        -->
-        <module>VegaModels-HenrysLawOpera</module>
-        <module>VegaModels-KoaOpera</module>
-        <module>VegaModels-KocOpera</module>
-        <module>VegaModels-LogPALogP</module>
-        <module>VegaModels-LogPMeylan</module>
-        <module>VegaModels-LogPMLogP</module>
-        <module>VegaModels-MeltingPoint</module>
-        <module>VegaModels-MeltingPointKNN</module>
-        <module>VegaModels-VapourPressure</module>
-        <module>VegaModels-WaterSolubility</module>
+<!--        <module>VegaModels-HenrysLawOpera</module>-->
+<!--        <module>VegaModels-KoaOpera</module>-->
+<!--        <module>VegaModels-KocOpera</module>-->
+<!--        <module>VegaModels-LogPALogP</module>-->
+<!--        <module>VegaModels-LogPMeylan</module>-->
+<!--        <module>VegaModels-LogPMLogP</module>-->
+<!--        <module>VegaModels-MeltingPoint</module>-->
+<!--        <module>VegaModels-MeltingPointKNN</module>-->
+<!--        <module>VegaModels-VapourPressure</module>-->
+<!--        <module>VegaModels-WaterSolubility</module>-->
 
 
         <!-- OTHER        -->
-        <module>VegaModels-AromataseIRFMN</module>
-        <module>VegaModels-Ahr_up</module>
-        <module>VegaModels-AromataseTox21</module>
-        <module>VegaModels-Dio1</module>
-        <module>VegaModels-GlucocorticoidReceptor</module>
-        <module>VegaModels-LogK</module>
-        <module>VegaModels-NRF2Up</module>
-        <module>VegaModels-ONTOX-assay</module>
-        <module>VegaModels-PGPNic</module>
-        <module>VegaModels-PPARa_up</module>
-        <module>VegaModels-PPARg_up</module>
-        <module>VegaModels-PPBCoral</module>
-        <module>VegaModels-PXR_up</module>
-        <module>VegaModels-RBACerapp</module>
-        <module>VegaModels-RBACompareIRFMN</module>
-        <module>VegaModels-RBAIrfmn</module>
-        <module>VegaModels-SQfu</module>
-        <module>VegaModels-SteroidogenesisEDScreen</module>
-        <module>VegaModels-ThyroidTRAlphaNRMEA</module>
-        <module>VegaModels-ThyroidTRBetaNRMEA</module>
-        <module>VegaModels-TissueBloodIneris</module>
-        <module>VegaModels-TotalHLQsarins</module>
-        <module>VegaModels-TPOOberon</module>
-        <module>VegaModels-TTR</module>
+<!--        <module>VegaModels-AromataseIRFMN</module>-->
+<!--        <module>VegaModels-Ahr_up</module>-->
+<!--        <module>VegaModels-AromataseTox21</module>-->
+<!--        <module>VegaModels-Dio1</module>-->
+<!--        <module>VegaModels-GlucocorticoidReceptor</module>-->
+<!--        <module>VegaModels-LogK</module>-->
+<!--        <module>VegaModels-NRF2Up</module>-->
+<!--        <module>VegaModels-ONTOX-assay</module>-->
+<!--        <module>VegaModels-PGPNic</module>-->
+<!--        <module>VegaModels-PPARa_up</module>-->
+<!--        <module>VegaModels-PPARg_up</module>-->
+<!--        <module>VegaModels-PPBCoral</module>-->
+<!--        <module>VegaModels-PXR_up</module>-->
+<!--        <module>VegaModels-RBACerapp</module>-->
+<!--        <module>VegaModels-RBACompareIRFMN</module>-->
+<!--        <module>VegaModels-RBAIrfmn</module>-->
+<!--        <module>VegaModels-SQfu</module>-->
+<!--        <module>VegaModels-SteroidogenesisEDScreen</module>-->
+<!--        <module>VegaModels-ThyroidTRAlphaNRMEA</module>-->
+<!--        <module>VegaModels-ThyroidTRBetaNRMEA</module>-->
+<!--        <module>VegaModels-TissueBloodIneris</module>-->
+<!--        <module>VegaModels-TotalHLQsarins</module>-->
+<!--        <module>VegaModels-TPOOberon</module>-->
+<!--        <module>VegaModels-TTR</module>-->
 
     </modules>
 
-    <name>VegaModels</name>
+    <name>VegaModels-Human</name>
     <description>
-        Vega Models parent project for insilico project (VEGA etc) - Updated to CDK 2.3, OpenJDK 11
+        Vega Models parent project for QSAR human models
     </description>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <skipTests>true</skipTests>
         <model.name.arg>default-value</model.name.arg>
         <model.make.trainingset>false</model.make.trainingset>
@@ -165,20 +167,21 @@
 
 
     <distributionManagement>
-        <snapshotRepository>
-            <id>amcc-maven-snapshots</id>
-            <url>http://tech-amcc.it:8081/repository/amcc-maven-snapshots/</url>
-        </snapshotRepository>
         <repository>
-            <id>amcc-maven-releases</id>
-            <url>http://tech-amcc.it:8081/repository/amcc-maven-releases/</url>
+            <id>protoqsar-maven-releases</id>
+            <url>https://nexus.protoqsar.com/repository/maven-releases/</url>
         </repository>
     </distributionManagement>
 
     <repositories>
         <repository>
-            <id>maven-public</id>
-            <url>http://tech-amcc.it:8081/repository/maven-public/</url>
+            <id>maven-central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
+            <!-- public repo hosted by ProtoQSAR, access with maven-public:maven-public -->
+            <id>protoqsar-maven-public</id>
+            <url>https://nexus.protoqsar.com/repository/maven-public/</url>
         </repository>
     </repositories>
 
@@ -233,10 +236,10 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
-                    <source>11</source>
-                    <target>11</target>
+                    <source>17</source>
+                    <target>17</target>
 
-                    <release>11</release>
+                    <release>17</release>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
@@ -277,33 +280,6 @@
 <!--                        </configuration>-->
 <!--                    </execution>-->
                 </executions>
-            </plugin>
-
-
-            <plugin>
-                <groupId>org.asciidoctor</groupId>
-                <artifactId>asciidoctor-maven-plugin</artifactId>
-                <version>1.5.8</version>
-                <executions>
-                    <execution>
-                        <id>generate-docs</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>process-asciidoc</goal>
-                        </goals>
-                        <configuration>
-                            <backend>html</backend>
-                            <doctype>book</doctype>
-                        </configuration>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.springframework.restdocs</groupId>
-                        <artifactId>spring-restdocs-asciidoctor</artifactId>
-                        <version>LATEST</version>
-                    </dependency>
-                </dependencies>
             </plugin>
 
             <plugin>
