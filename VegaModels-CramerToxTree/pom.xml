@@ -17,6 +17,12 @@
         Cramer classification from ToxTree 3.1.
     </description>
 
+    <repositories>
+        <repository>
+            <id>nexus-idea-releases</id>
+            <url>https://nexus.ideaconsult.net/content/repositories/releases</url>
+        </repository>
+    </repositories>
 
     <dependencies>
         <dependency>
@@ -24,8 +30,6 @@
             <artifactId>beam-core</artifactId>
             <version>LATEST</version>
         </dependency>
-
-
 
         <dependency>
             <groupId>InSilico</groupId>
@@ -35,7 +39,7 @@
         </dependency>
 
         <dependency>
-            <groupId>InSilico.ToxTree</groupId>
+            <groupId>toxtree</groupId>
             <artifactId>toxtree-cramer</artifactId>
             <version>3.1.0</version>
         </dependency>
@@ -63,7 +67,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.22</version>
+                            <version>1.18.42</version>
                         </path>
                     </annotationProcessorPaths>
 
