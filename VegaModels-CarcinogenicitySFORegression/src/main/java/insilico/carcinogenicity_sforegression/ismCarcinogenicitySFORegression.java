@@ -11,13 +11,13 @@ import insilico.core.descriptor.blocks.*;
 import insilico.core.exception.InitFailureException;
 import insilico.core.model.InsilicoModel;
 import insilico.core.model.InsilicoModelOutput;
-import insilico.core.pmml.ModelANNFromPMML;
 import insilico.core.tools.utils.ModelUtilities;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.isomorphism.Pattern;
 import org.openscience.cdk.isomorphism.matchers.QueryAtomContainer;
 import org.openscience.cdk.smarts.SmartsPattern;
 import org.openscience.cdk.smiles.smarts.parser.SMARTSParser;
+import insilico.core.pmml.ModelANNFromPMML;
 
 import java.io.IOException;
 import java.net.URL;
