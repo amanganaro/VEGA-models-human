@@ -10,7 +10,7 @@ import insilico.core.molecule.conversion.SmilesMolecule;
 import insilico.mutagenicity_amines.rules.AromaticAminesSubclassClassifier;
 
 import org.openscience.cdk.exception.Intractable;
-import utils.ModelsDeployment;
+import insilico.core.devops.ModelsDeployment;
 
 import java.io.File;
 import java.io.FileNotFoundException;

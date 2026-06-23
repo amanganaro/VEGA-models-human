@@ -1,11 +1,11 @@
 import insilico.carcinogenicity_caesar.ismCarcinogenicityCaesar;
+import insilico.core.devops.ModelsDeployment;
 import insilico.core.model.InsilicoModel;
 import insilico.core.model.InsilicoModelOutput;
 import insilico.core.molecule.conversion.SmilesMolecule;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utils.ModelsDeployment;
 
 import java.io.File;
 import java.nio.file.Files;

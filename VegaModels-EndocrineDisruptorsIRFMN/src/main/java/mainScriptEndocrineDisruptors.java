@@ -2,7 +2,7 @@ import insilico.core.model.InsilicoModelOutput;
 import insilico.core.molecule.InsilicoMolecule;
 import insilico.core.molecule.conversion.SmilesMolecule;
 import insilico.endocrine_disruptors_irfmn.ismEndocrineDisruptorsIRFMN;
-import utils.ModelsDeployment;
+import insilico.core.devops.ModelsDeployment;
 
 import java.io.File;
 import java.nio.file.Files;

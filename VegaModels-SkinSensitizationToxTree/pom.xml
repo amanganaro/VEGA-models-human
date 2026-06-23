@@ -30,13 +30,6 @@
             <version>LATEST</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.kode.lib</groupId>-->
-<!--            <artifactId>ToxTreeWrapper</artifactId>-->
-<!--            <version>1.0</version>-->
-<!--            <classifier>shaded</classifier>-->
-<!--        </dependency>-->
-
     </dependencies>
 
     <build>

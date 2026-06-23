@@ -5,7 +5,7 @@ import insilico.core.exception.InitFailureException;
 import insilico.core.model.InsilicoModel;
 import insilico.core.model.InsilicoModelOutput;
 import insilico.core.molecule.conversion.SmilesMolecule;
-import utils.ModelsDeployment;
+import insilico.core.devops.ModelsDeployment;
 
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -9,7 +9,7 @@ import insilico.devtox_pg.library.VirtualCompoundLibrary;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import utils.ModelsDeployment;
+import insilico.core.devops.ModelsDeployment;
 
 import java.io.File;
 import java.nio.file.Files;
