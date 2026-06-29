@@ -2,7 +2,7 @@
 
     <Version>
         <Name>Eye Irritation (CONCERT/Kode)</Name>
-        <Key>EYE IRRITATION</Key>
+        <Key>EYE_IRRITATION</Key>
         <Summary>Eye irritation model (CONCERT/Kode)</Summary>
         <Version>1.0.0</Version>
     </Version>
