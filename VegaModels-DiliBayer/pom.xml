@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-                <groupId>InSilico</groupId>
+        <groupId>InSilico</groupId>
         <artifactId>VegaModels-Human</artifactId>
         <version>1.0</version>
     </parent>
@@ -23,8 +23,12 @@
     </properties>
 
     <dependencies>
-
-
+        <dependency>
+            <groupId>com.protoqsar</groupId>
+            <artifactId>VegaPythonEnv-Global</artifactId>
+            <optional>true</optional>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
     <build>

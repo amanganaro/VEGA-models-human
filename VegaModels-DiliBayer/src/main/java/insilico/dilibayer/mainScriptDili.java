@@ -25,7 +25,7 @@ public class mainScriptDili {
 
 
     public static void main(String[] args) throws GenericFailureException, InitFailureException, IOException, URISyntaxException, InterruptedException {
-        InsilicoModel model = new ismDiliBayer(true, null);
+        InsilicoModel model = new ismDiliBayer(false, null);
 
 //        iTrainingSet ist = model.GetTrainingSet();
 //        for(int i=0; i < ist.getMoleculesSize(); i++){

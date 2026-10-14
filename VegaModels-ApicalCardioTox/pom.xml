@@ -26,6 +26,15 @@
         <model.artifactId>${project.artifactId}</model.artifactId>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.protoqsar</groupId>
+            <artifactId>VegaPythonEnv-Global</artifactId>
+            <optional>true</optional>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+
 
     <build>
         <plugins>
