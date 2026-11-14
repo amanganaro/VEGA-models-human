@@ -87,6 +87,16 @@ public class CardioToxMultitask extends InsilicoModelPython {
         cdddDescriptors = (CdddDescriptors) descriptorGenerator;
     }
 
+    /**
+     * This model can predict several molecules with a single execution of its Python script: the script reads the
+     * whole input file and explicitly handles the case of more than one row, writing one output row per input row
+     * in the same order and echoing the SMILES back.
+     */
+    @Override
+    public boolean supportsBatchExecution() {
+        return true;
+    }
+
     @Override
     protected short CalculateDescriptors(DescriptorsEngine descriptorsEngine) {
         try {

@@ -69,6 +69,16 @@ public class ApicalCardioTox extends InsilicoModelPython {
         cdddDescriptors = (CdddDescriptors) descriptorGenerator;
     }
 
+    /**
+     * This model can predict several molecules with a single execution of its Python script: the script reads the
+     * whole input file, evaluates the applicability domain of every SMILES in it and calls the models with
+     * {@code singlemol=False}, writing one output row per input row in the same order.
+     */
+    @Override
+    public boolean supportsBatchExecution() {
+        return true;
+    }
+
     @Override
     protected short CalculateDescriptors(DescriptorsEngine descriptorsEngine) {
         try {
