@@ -43,7 +43,7 @@ public class ismDiliBayer extends InsilicoModelPython {
     }
 
     public ismDiliBayer(boolean bypassCheckCondaEnv, iInsilicoModelRunnerMessenger messenger) throws InitFailureException, GenericFailureException {
-        super(ModelData, messenger, "dili-bayer_1_0_0", "GLOBAL", bypassCheckCondaEnv);
+        super(ModelData, messenger, "dili-bayer_1_0_1", "GLOBAL", bypassCheckCondaEnv);
 
         isUsingCdddDescriptor=true;
 
@@ -130,6 +130,29 @@ public class ismDiliBayer extends InsilicoModelPython {
     @Override
     public void setDescriptorGenerator(Object descriptorGenerator) {
         cdddDescriptors = (CdddDescriptors) descriptorGenerator;
+    }
+
+    /**
+     * This model can predict several molecules with a single execution of its Python script. Since version 1.0.1
+     * the script realigns the index of the input frame before merging it with the predictions, so a molecule that
+     * has been dropped while standardizing no longer shifts the following rows.
+     * <p>
+     * A molecule that cannot be standardized is still missing from the output. The batch is then refused by the
+     * alignment guard and the whole set falls back to the per-molecule execution: the results stay correct and
+     * only the speed-up is lost.
+     */
+    @Override
+    public boolean supportsBatchExecution() {
+        return true;
+    }
+
+    /**
+     * This script reads its arguments positionally ({@code sys.argv[1]} and {@code sys.argv[2]}) instead of using
+     * {@code --input} and {@code --output} like every other model, so the default parameters do not apply.
+     */
+    @Override
+    protected String[] buildBatchCommandParams(String inputFile, String outputFile) {
+        return new String[] { inputFile, outputFile };
     }
 
     @Override

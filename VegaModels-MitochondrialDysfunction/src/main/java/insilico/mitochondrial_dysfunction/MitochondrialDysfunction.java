@@ -47,7 +47,7 @@ public class MitochondrialDysfunction extends InsilicoModelPython {
     }
 
     public MitochondrialDysfunction(boolean bypassCheckCondaEnv, iInsilicoModelRunnerMessenger messenger) throws InitFailureException, GenericFailureException{
-        super(ModelData, messenger, "mitochondrial-dysfunction_1_0_0", "GLOBAL", bypassCheckCondaEnv);
+        super(ModelData, messenger, "mitochondrial-dysfunction_1_0_1", "GLOBAL", bypassCheckCondaEnv);
 
         isUsingCdddDescriptor=true;
 
@@ -75,6 +75,16 @@ public class MitochondrialDysfunction extends InsilicoModelPython {
     @Override
     public void setDescriptorGenerator(Object descriptorGenerator) {
         cdddDescriptors = (CdddDescriptors) descriptorGenerator;
+    }
+
+    /**
+     * This model can predict several molecules with a single execution of its Python script. The script reads the
+     * whole input file, evaluates the applicability domain of every SMILES in it and, since version 1.0.1, calls
+     * the models with {@code singlemol=False}, writing one output row per input row in the same order.
+     */
+    @Override
+    public boolean supportsBatchExecution() {
+        return true;
     }
 
     @Override
