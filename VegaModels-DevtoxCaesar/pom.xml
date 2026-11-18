@@ -12,12 +12,13 @@
     <artifactId>VegaModels-DevtoxCaesar</artifactId>
     <version>2.1.8</version>
 
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>weka-repo</id>-->
-<!--            <url>http://obsearch.net/repository/</url>-->
-<!--        </repository>-->
-<!--    </repositories>-->
+    <!--
+        weka:weka:3.5.8 was originally served only by http://obsearch.net/repository/, an HTTP-only repository that
+        recent Maven versions block, so the dependency could no longer be resolved. The very same artifact was taken
+        from there and republished on the ProtoQSAR Nexus (https://nexus.protoqsar.com/repository/maven-public/),
+        which is now its only source: it is resolved through the repositories declared in the parent pom.
+        The version is unchanged, so the model predictions are unchanged.
+    -->
 
 
     <name>Developmental Toxicity model (CAESAR)</name>

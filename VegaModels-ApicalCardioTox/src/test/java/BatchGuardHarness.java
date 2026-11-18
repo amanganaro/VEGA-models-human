@@ -11,16 +11,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
- * Checks the guard that protects the batch mode from misaligned results.
+ * Checks that a batch never attributes a prediction to the wrong molecule.
  * <p>
- * A batch is only safe if the rows that come back line up with the molecules that went in. These two cases simulate
- * the two ways that can break — a row disappearing and the rows coming back in a different order — by tampering with
- * the input file. In both cases the model must refuse the batch and fall back to the per-molecule execution, which
- * is slower but always correct. A wrong prediction silently attributed to the wrong molecule would be far worse
- * than a slow run.
+ * A batch is only safe if every row that comes back is given to the molecule it was computed for. These two cases
+ * simulate the two ways that can break — a row disappearing and the rows coming back in a different order — by
+ * tampering with the input file. In both cases the results must be exactly the ones of the per-molecule execution.
+ * <p>
+ * Rows are matched by the SMILES each one carries, not by their position, because several Python scripts drop the
+ * molecules they cannot handle. A molecule left without a row falls back to the per-molecule execution, which is
+ * slower but always correct, so a missing row costs time and never correctness.
  */
 public class BatchGuardHarness {
 
@@ -40,9 +43,9 @@ public class BatchGuardHarness {
         }
 
         @Override
-        protected void buildBatchInputFile(List<String> smilesList, Path target)
+        protected Map<String, String> buildBatchInputFile(List<String> smilesList, Path target)
                 throws IOException, GenericFailureException {
-            super.buildBatchInputFile(smilesList.subList(0, Math.max(0, smilesList.size() - 1)), target);
+            return super.buildBatchInputFile(smilesList.subList(0, Math.max(0, smilesList.size() - 1)), target);
         }
     }
 
@@ -53,11 +56,11 @@ public class BatchGuardHarness {
         }
 
         @Override
-        protected void buildBatchInputFile(List<String> smilesList, Path target)
+        protected Map<String, String> buildBatchInputFile(List<String> smilesList, Path target)
                 throws IOException, GenericFailureException {
             List<String> reversed = new ArrayList<>(smilesList);
             Collections.reverse(reversed);
-            super.buildBatchInputFile(reversed, target);
+            return super.buildBatchInputFile(reversed, target);
         }
     }
 
@@ -68,13 +71,13 @@ public class BatchGuardHarness {
 
         System.out.println();
         System.out.println(failures == 0
-                ? "ALL GUARD CASES OK: the batch was refused and the results stayed correct"
+                ? "ALL GUARD CASES OK: the results stayed correct"
                 : failures + " GUARD CASE(S) FAILED");
     }
 
     /**
-     * Runs the model per molecule and then tries the tampered batch: the batch must be refused and the results must
-     * still match the per-molecule run.
+     * Runs the model per molecule and then with the tampered batch: whether the batch is used or refused, the
+     * results must match the per-molecule run cell by cell.
      */
     private static void check(String name, ApicalCardioTox model) throws Exception {
 
@@ -100,13 +103,8 @@ public class BatchGuardHarness {
             List<String[]> expected = run(model, molecules);
 
             model.prepareBatch(molecules);
-            boolean batchActive = model.isBatchActive();
-            System.out.println("isBatchActive: " + batchActive + " (must be false)");
-            if (batchActive) {
-                System.out.println("FAILED (" + name + "): the batch was accepted although the rows do not line up");
-                failures++;
-                return;
-            }
+            System.out.println("isBatchActive: " + model.isBatchActive()
+                    + " (either way, the results below must be unchanged)");
 
             List<String[]> actual = run(model, molecules);
             int differences = 0;
@@ -128,10 +126,10 @@ public class BatchGuardHarness {
             }
 
             if (differences > 0) {
-                System.out.println("FAILED (" + name + "): " + differences + " differing cells after the fallback");
+                System.out.println("FAILED (" + name + "): " + differences + " differing cells");
                 failures++;
             } else {
-                System.out.println("OK: batch refused, results unchanged");
+                System.out.println("OK: results unchanged");
             }
         } finally {
             model.clearBatch();
