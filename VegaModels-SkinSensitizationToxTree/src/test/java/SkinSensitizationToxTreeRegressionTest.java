@@ -14,4 +14,14 @@ public class SkinSensitizationToxTreeRegressionTest extends ModelRegressionTest 
     protected List<InsilicoModel> getModels() throws Exception {
         return List.of(new ismSkinSensitizationToxTree());
     }
+
+    /**
+     * The model ships an empty training set (its ts file holds only the header row), so only the core dataset
+     * applies. Without a training set it computes no applicability domain either, so the ADI column of the core
+     * reference is empty for every molecule.
+     */
+    @Override
+    protected boolean hasTrainingSet() {
+        return false;
+    }
 }
