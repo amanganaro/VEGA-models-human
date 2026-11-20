@@ -10,7 +10,6 @@ import insilico.core.model.InsilicoModelOutput;
 import insilico.core.tools.utils.ModelUtilities;
 import insilico.eye_irritation.descriptors.EmbeddedDescriptors;
 import insilico.eye_irritation.runner.nrNetwork;
-import javassist.runtime.Desc;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

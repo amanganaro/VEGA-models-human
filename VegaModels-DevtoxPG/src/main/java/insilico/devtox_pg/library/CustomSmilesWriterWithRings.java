@@ -47,8 +47,7 @@ import org.openscience.cdk.interfaces.IIsotope;
 import org.openscience.cdk.interfaces.IPseudoAtom;
 import org.openscience.cdk.interfaces.IRingSet;
 import org.openscience.cdk.ringsearch.AllRingsFinder;
-import org.openscience.cdk1.interfaces.IMolecule;
-import org.openscience.cdk1.interfaces.IMoleculeSet;
+import org.openscience.cdk.interfaces.IAtomContainerSet;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -219,15 +218,15 @@ public class CustomSmilesWriterWithRings
      */
 	public synchronized String createSMILES(IAtomContainer molecule, boolean chiral, boolean doubleBondConfiguration[]) throws CDKException
 	{
-		IMoleculeSet moleculeSet = (IMoleculeSet) ConnectivityChecker.partitionIntoMolecules(molecule);
-		if (moleculeSet.getMoleculeCount() > 1)
+		IAtomContainerSet moleculeSet = ConnectivityChecker.partitionIntoMolecules(molecule);
+		if (moleculeSet.getAtomContainerCount() > 1)
 		{
 			StringBuilder fullSMILES = new StringBuilder();
 			for (int i = 0; i < moleculeSet.getAtomContainerCount(); i++)
 			{
-				IMolecule molPart = moleculeSet.getMolecule(i);
+				IAtomContainer molPart = moleculeSet.getAtomContainer(i);
 				fullSMILES.append(createSMILESWithoutCheckForMultipleMolecules(
-						(IAtomContainer) molPart, chiral, doubleBondConfiguration));
+						molPart, chiral, doubleBondConfiguration));
 				if (i < (moleculeSet.getAtomContainerCount() - 1))
 				{
 					// are there more molecules?
