@@ -10,45 +10,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>VegaModels-CramerToxTree</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0</version>
 
     <name>Cramer classification (TOXTREE)</name>
     <description>
         Cramer classification from ToxTree 3.1.
     </description>
 
-    <repositories>
-        <repository>
-            <id>nexus-idea-releases</id>
-            <url>https://nexus.ideaconsult.net/content/repositories/releases</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
-            <!--
-                Pinned to the version CDK 2.3 is built against, the one every other module gets transitively.
-                It used to be LATEST, which resolved to 1.4: that release no longer has
-                Graph.parse(String, boolean, Set), so every SMILES conversion failed with NoSuchMethodError.
-            -->
-            <groupId>uk.ac.ebi.beam</groupId>
-            <artifactId>beam-core</artifactId>
-            <version>1.3.3</version>
-        </dependency>
-
-        <dependency>
             <groupId>InSilico</groupId>
-            <artifactId>ToxTreeWrapper</artifactId>
-            <version>1.0</version>
-            <classifier>shaded</classifier>
+            <artifactId>ToxTreeRules</artifactId>
+            <version>1.0.0</version>
         </dependency>
-
-        <dependency>
-            <groupId>toxtree</groupId>
-            <artifactId>toxtree-cramer</artifactId>
-            <version>3.1.0</version>
-        </dependency>
-
     </dependencies>
 
     <build>
@@ -56,19 +30,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-deploy-plugin</artifactId>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-
-                    <release>11</release>
-
-                </configuration>
             </plugin>
 
             <plugin>
