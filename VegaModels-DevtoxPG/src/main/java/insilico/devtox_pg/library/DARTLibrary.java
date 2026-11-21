@@ -10,7 +10,7 @@ import java.io.ObjectInputStream;
 import java.net.URL;
 import java.util.BitSet;
 import org.openscience.cdk.exception.CDKException;
-import org.openscience.cdk.fingerprint.Fingerprinter;
+import insilico.core.similarity.legacy.LegacyFingerprinter;
 import org.openscience.cdk.fingerprint.FingerprinterTool;
 import org.openscience.cdk.isomorphism.Pattern;
 import org.openscience.cdk.isomorphism.matchers.QueryAtomContainer;
@@ -81,7 +81,7 @@ public class DARTLibrary {
     private static final String LIB_ROOT = "/dart_library/";
     private Pattern CurMatcher;
     private final AllRingsFinder ARF;
-    private final Fingerprinter Fprinter;
+    private final LegacyFingerprinter Fprinter;
     
     
     public class DARTResult {
@@ -102,7 +102,7 @@ public class DARTLibrary {
     public DARTLibrary() throws InitFailureException {
         ARF = new AllRingsFinder();
 //        ARF.setTimeout(10000);
-        Fprinter = new Fingerprinter();   
+        Fprinter = new LegacyFingerprinter();   
         
         try {
             //// 1a - Metals and metallic derivative

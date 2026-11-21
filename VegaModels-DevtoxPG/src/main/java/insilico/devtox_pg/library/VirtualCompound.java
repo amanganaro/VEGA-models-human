@@ -4,7 +4,7 @@ import insilico.core.molecule.InsilicoMolecule;
 import insilico.core.molecule.conversion.SmilesMolecule;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.CDKException;
-import org.openscience.cdk.fingerprint.Fingerprinter;
+import insilico.core.similarity.legacy.LegacyFingerprinter;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.isomorphism.Pattern;
 import org.openscience.cdk.ringsearch.AllRingsFinder;
@@ -67,7 +67,7 @@ public class VirtualCompound implements Serializable {
         try {
             AllRingsFinder ARF = new AllRingsFinder();
 //            ARF.setTimeout(10000);
-            Fingerprinter fp = new Fingerprinter();
+            LegacyFingerprinter fp = new LegacyFingerprinter();
             FP = fp.getFingerprint(curMol.GetStructure());
         } catch (Throwable ex) {
             throw new CDKException("Unable to create FP: " + ex.getMessage());

@@ -10,8 +10,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>VegaModels-DevtoxPG</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
 
+    <properties>
+        <!-- The library uses insilico.core.similarity.legacy, which exists from Core 1.3.24 on -->
+        <vega.core.version>1.3.24</vega.core.version>
+    </properties>
 
     <name>Developmental/Reproductive Toxicity library (PG)</name>
     <description>
