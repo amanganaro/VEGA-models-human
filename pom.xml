@@ -296,6 +296,25 @@
                 <surefire.excludedGroups></surefire.excludedGroups>
                 <surefire.testFailureIgnore>false</surefire.testFailureIgnore>
             </properties>
+            <!--
+                The Python environments are not dependencies of the models: the application decides whether to ship
+                them (the win-x64 GUI) or to build them with conda. The regression tests need them, so they are added
+                here, in test scope, for every module; the Core looks for /condapack-env/<env>.zip on the classpath.
+            -->
+            <dependencies>
+                <dependency>
+                    <groupId>InSilico</groupId>
+                    <artifactId>VegaPythonEnv-Global</artifactId>
+                    <version>1.0.0</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>InSilico</groupId>
+                    <artifactId>VegaPythonEnv-Cddd</artifactId>
+                    <version>1.0.0</version>
+                    <scope>test</scope>
+                </dependency>
+            </dependencies>
         </profile>
     </profiles>
 
