@@ -5,7 +5,6 @@ import insilico.core.ad.ADCheckDescriptorRange;
 import insilico.core.ad.ADCheckIndicesQualitative;
 import insilico.core.ad.item.*;
 import insilico.core.descriptor.DescriptorsEngine;
-import insilico.core.exception.GenericFailureException;
 import insilico.core.exception.InitFailureException;
 import insilico.core.model.InsilicoModel;
 import insilico.core.model.InsilicoModelOutput;
@@ -13,15 +12,10 @@ import insilico.core.model.InsilicoModelOutput;
 import insilico.core.tools.utils.ModelUtilities;
 import insilico.devtox_caesar.descriptors.EmbeddedDescriptors;
 import insilico.devtox_caesar.descriptors.IcycemDescriptor;
+import insilico.devtox_caesar.model.DevtoxCaesarForest;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
 
 /**
  *
@@ -35,15 +29,12 @@ public class ismDevtoxCaesar extends InsilicoModel {
 
     private static final String ModelData = "/data/model_devtox_caesar.xml";
 
-    private final modelRandomForest RandomForest;
+    private final DevtoxCaesarForest RandomForest;
 
 
     public ismDevtoxCaesar()
             throws InitFailureException {
         super(ModelData);
-
-        // Builds model objects
-        RandomForest = new modelRandomForest("/data/sel18_EPA_training.arff");
 
         // Define no. of descriptors
         this.DescriptorsSize = 13;
@@ -61,6 +52,10 @@ public class ismDevtoxCaesar extends InsilicoModel {
         this.DescriptorsNames[10] = "MATS4v";
         this.DescriptorsNames[11] = "SdssC";
         this.DescriptorsNames[12] = "SHssNH";
+
+        // Builds model objects: the forest matches the descriptors by name, so it must be built once they
+        // are declared
+        RandomForest = new DevtoxCaesarForest(this.DescriptorsNames);
 
         // Defines results
         this.ResultsSize = 1;
@@ -120,67 +115,16 @@ public class ismDevtoxCaesar extends InsilicoModel {
     @Override
     protected short CalculateModel() {
 
-        int MainResult = -1;
+        int MainResult;
 
         try {
 
-            // Creates the ARFF file
-            String header = "@relation model_test"+"\n"+"\n"+"@attribute SdssC numeric"+
-                "\n"+"@attribute SHssNH numeric"+"\n"+"@attribute icycem" +
-                " numeric"+"\n"+"@attribute BEHm1 numeric"+"\n"+"@attribute " +
-                "BELv1 numeric"+"\n"+"@attribute BELv8 numeric"+"\n"+
-                "@attribute" +" BELp3 numeric"+"\n"+"@attribute MATS4v numeric"
-                +"\n"+"@attribute MATS1p numeric"+"\n"+"@attribute MATS4p" +
-                " numeric"+"\n"+"@attribute GATS2m numeric"+"\n"+"@attribute" +
-                " GATS3v" +" numeric"+"\n"+"@attribute GATS1p numeric"+"\n"+
-                "@attribute" +" Tox {N,D}"+"\n"+"\n"+"@data"+"\n";
+            // The forest always answers: no undefined class can be returned
+            MainResult = RandomForest.predictToxic(Descriptors) ? 1 : 0;
 
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            OutputStreamWriter osw = new OutputStreamWriter(baos);
-            BufferedWriter bw = new BufferedWriter(osw);
-
-            bw.write(header);
-            bw.write(Double.toString(Descriptors[11]));
-            bw.write(",");
-            bw.write(Double.toString(Descriptors[12]));
-            bw.write(",");
-            bw.write(Double.toString(Descriptors[0]));
-            bw.write(",");
-            bw.write(Double.toString(Descriptors[1]));
-            bw.write(",");
-            bw.write(Double.toString(Descriptors[3]));
-            bw.write(",");
-            bw.write(Double.toString(Descriptors[4]));
-            bw.write(",");
-            bw.write(Double.toString(Descriptors[2]));
-            bw.write(",");
-            bw.write(Double.toString(Descriptors[10]));
-            bw.write(",");
-            bw.write(Double.toString(Descriptors[8]));
-            bw.write(",");
-            bw.write(Double.toString(Descriptors[9]));
-            bw.write(",");
-            bw.write(Double.toString(Descriptors[6]));
-            bw.write(",");
-            bw.write(Double.toString(Descriptors[7]));
-            bw.write(",");
-            bw.write(Double.toString(Descriptors[5]));
-            bw.write(",");
-            bw.write("?");
-
-            bw.close();
-
-            byte[] Input_ARFF = baos.toByteArray();
-
-            boolean CurResult = RandomForest.ExecuteModel(Input_ARFF);
-            if (CurResult)
-                MainResult = 1;
-            else
-                MainResult = 0;
-
-            // No undefined class can be returned
-
-        } catch (IOException | GenericFailureException e) {
+        } catch (Throwable e) {
+            // Only reached by descriptors the forest cannot walk on, which Execute already rules out
+            log.warn("Unable to run the forest of the model: " + e.getMessage());
             return MODEL_ERROR;
         }
 

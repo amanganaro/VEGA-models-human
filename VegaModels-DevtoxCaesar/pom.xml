@@ -10,14 +10,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>VegaModels-DevtoxCaesar</artifactId>
-    <version>2.1.9</version>
+    <version>2.2.0</version>
 
     <!--
-        weka:weka:3.5.8 was originally served only by http://obsearch.net/repository/, an HTTP-only repository that
-        recent Maven versions block, so the dependency could no longer be resolved. The very same artifact was taken
-        from there and republished on the ProtoQSAR Nexus (https://nexus.protoqsar.com/repository/maven-public/),
-        which is now its only source: it is resolved through the repositories declared in the parent pom.
-        The version is unchanged, so the model predictions are unchanged.
+        Up to version 2.1.9 this model depended on weka:weka:3.5.8, an artifact from 2008 that is not on Maven
+        Central: it was served only by http://obsearch.net/repository/, an HTTP-only repository that recent Maven
+        versions block, and had to be republished on the ProtoQSAR Nexus to stay resolvable. WEKA was used to
+        train the random forest again on every instantiation of the model, which also made the predictions depend
+        on the floating point library of the JVM that ran the training. The trained forest has been extracted
+        once, with tools/weka-forest-dump, and now lives in /data/forest_devtox_caesar.txt: the model reads it and
+        predicts on its own, with no dependency left. The predictions are unchanged, as the regression tests show.
     -->
 
 
@@ -25,16 +27,6 @@
     <description>
         QSAR classification model for Developmental Toxicity (from CAESAR project)
     </description>
-
-    <dependencies>
-
-        <dependency>
-            <groupId>weka</groupId>
-            <artifactId>weka</artifactId>
-            <version>3.5.8</version>
-        </dependency>
-
-    </dependencies>
 
 
     <build>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>InSilico</groupId>
+    <artifactId>weka-forest-dump</artifactId>
+    <version>1.0</version>
+
+    <name>WEKA forest extraction tool</name>
+    <description>
+        One-off tool that extracted the trained random forest of the Developmental Toxicity (CAESAR) model out
+        of WEKA 3.5.8, so that the model could be run without WEKA. It is deliberately NOT a module of the
+        VegaModels-Human reactor: the build of the models must not depend on WEKA any more. See README.md.
+    </description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- The model this tool reads the training set and the prediction code from -->
+        <devtox.version>2.2.0</devtox.version>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>protoqsar-maven-public</id>
+            <url>https://nexus.protoqsar.com/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+
+        <!-- The only place left where WEKA is declared, and it never reaches the models -->
+        <dependency>
+            <groupId>weka</groupId>
+            <artifactId>weka</artifactId>
+            <version>3.5.8</version>
+        </dependency>
+
+        <!--
+            For the training set resource and for DecisionForest, the code under test. The transitive
+            dependencies are excluded on purpose: this tool only touches DecisionForest, which needs nothing
+            but the JDK, and resolving the whole model would need the dependencyManagement of the reactor
+            this project stays out of.
+        -->
+        <dependency>
+            <groupId>InSilico</groupId>
+            <artifactId>VegaModels-DevtoxCaesar</artifactId>
+            <version>${devtox.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
